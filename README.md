@@ -87,3 +87,5 @@ Task 0 is the source, tasks 1, 2, 3, 4 depend from it and they are parallel.
 All tasks 1, 2, 3, 4 have a dependency to task 5, that is the sink. Task 3, for example, requires 9712 Logic Elements, 30 dsps and 8 bram blocks. It has a duration of 23.74 microseconds.
 
 File "unusedGraphs.txt" contains a list of apps that are not taken into account in this analysis. We put a timer to MILP formulation. If such timer expires without the completion of MILP formulation, the application is discarded. This is to limit cases for which calculating an exact solution is too long.
+
+Finally, file "xc7s25.json" contains the description of the FPGA that we took into account during the simulations (Xilinx Spartan 7 - xc7s25". It is composed by 23360 Logic Elements, 80 Dsps, 45 BRAM blocks and a full reconfiguration time of 0.04 s.
