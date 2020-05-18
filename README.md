@@ -5,7 +5,7 @@ We specify to the reader that, as it can be seen from the history of this git re
 
 Following a brief explanation of each folder: 
 
-Folder WORKLOADRESULTS
+Folder "WorkloadResults"
 
 There is one folder for each workload (from 6 to 15 tasks) and one additional with the overall.
 Each folder contains (i) two csv files (one for SLOT and MILP, one for HEFT-NF and MILP) and (ii) the Cumulative Distribution Function (CDF) graph. The 'overall' folder contains the CDF only, because it is based on the concatenation of previous CSV files.
@@ -59,9 +59,9 @@ Columns are:
 - StdHeftNFTime -> standard-deviations of HEFT-NF execution timing
 
 
-Folder TESTBENCH
+Folder "Testbench"
 
-It contains all the graph instances in json format.
+It contains all the graph instances in json format + a file describing the target FPGA + a file that list the instance whose MILP formulation was too long.
 This directory contains thousands of json files whose format is:
 
 tests/xc7s25/tXX/eYYY/r0.1R0.5d10.0D50.0/ZZZ.app.json
