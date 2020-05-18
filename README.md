@@ -6,6 +6,7 @@ We specify to the reader that, as it can be seen from the history of this git re
 Following a brief explanation of each folder: 
 
 Folder WORKLOADRESULTS
+
 There is one folder for each workload (from 6 to 15 tasks) and one additional with the overall.
 Each folder contains (i) two csv files (one for SLOT and MILP, one for HEFT-NF and MILP) and (ii) the Cumulative Distribution Function (CDF) graph. The 'overall' folder contains the CDF only, because it is based on the concatenation of previous CSV files.
 
@@ -59,6 +60,7 @@ Columns are:
 
 
 Folder TESTBENCH
+
 It contains all the graph instances in json format.
 This directory contains thousands of json files whose format is:
 
@@ -77,6 +79,7 @@ app.json specifies the application using the following json fields:
 - adjacency -> for each task a list that contains task's successors is given. Adjacency lists follow the order of tasks.
 
 EXAMPLE
+
 { "name": "xc7s25 t06 e000 r0.1 R0.5 d10.0 D50.0 s001", "task": [ { "resource": [ 0, 0, 0 ], "duration": 0.0 }, { "resource": [ 6075, 21, 9 ], "duration": 39.848674824672422 }, { "resource": [ 4932, 13, 22 ], "duration": 30.936674559612236 }, { "resource": [ 9712, 30, 8 ], "duration": 23.740040935787903 }, { "resource": [ 8566, 17, 7 ], "duration": 16.253878259600562 }, { "resource": [ 0, 0, 0 ], "duration": 0.0 } ], "adjacency": [ [ 1, 2, 3, 4 ], [ 5 ], [ 5 ], [ 5 ], [ 5 ], [ ] ] }
 
 In this example, there are 6 tasks.
