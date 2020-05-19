@@ -115,7 +115,7 @@ The target FPGA for this evaluation is specified in JSON format in `Testbench/xc
 }
 ```
 
-The reconfiguration time (40 ms) is expressed in seconds. The 3 resource types are, in order, Configurable Logic Blocks (CLB), Digital Signal Processing blocks (DSP) and Block RAM (BRAM), with respective total amounts of 23360, 80 and 45.
+The reconfiguration time (40 ms) is expressed in seconds. The 3 resource types are, in order, Logic Elements (LEs), Digital Signal Processing blocks (DSP) and Block RAM (BRAM), with respective total amounts of 23360, 80 and 45.
 
 The `Testbench/unusedGraphs.txt` file contains the list of problem instances that could not be included in this evaluation because the time taken by the MILP solver was too long and the solver had to be interrupted.
 
