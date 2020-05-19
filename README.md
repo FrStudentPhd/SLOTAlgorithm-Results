@@ -1,91 +1,122 @@
-# SLOTAlgorithm-Results
-This folders contains all the instances and the results presented for the submission to DSD2020. No disclosure with authors identities or their affiliation can be recovered from here.
+# SLOT FPGA scheduling
 
-We specify to the reader that, as it can be seen from the history of this git repository, we first committed a summary of our results. Secondly, as an addition, we committed all the files that contain the topology of our input graphs.
+This project contains all instances of the FPGA scheduling problem used for the paper submited to DSD'2020 and the results obtained when solving them with the proposed method (`SLOT`), a state-of-the-art method (`HEFT-NF`) and an absolute reference computed with a Mixed-Integer Linear Programming package (`GLPK`, the GNU Linear Programming Kit).
 
-Following a brief explanation of each folder: 
+## Results
 
-Folder "WorkloadResults"
+The `WorkloadResults` folder contains one sub-folder per workload type, from 6 to 15 tasks. Each contains:
 
-There is one folder for each workload (from 6 to 15 tasks) and one additional with the overall.
-Each folder contains (i) two csv files (one for SLOT and MILP, one for HEFT-NF and MILP) and (ii) the Cumulative Distribution Function (CDF) graph. The 'overall' folder contains the CDF only, because it is based on the concatenation of previous CSV files.
+- A Comma Seperated Value (CSV) file, `tXX.csv` presenting the `SLOT` results.
+- A Comma Seperated Value (CSV) file, `tXX.heft-nf.csv` presenting the `HEFT-NF` results.
+- The Cumulative Distribution Function (CDF) plots of the differences with the MILP optimum, in PDF format, `CDFXTasks.pdf`.
 
-How to read csv files
-1. The first table gives all the tested instances. Columns are:
+The `overall` folder contains the overall CDF graph computed on all problem instances.
 
-- NAME -> unique name of the instance
-- T -> number of tasks
-- E -> number of edges
-- MMIP -> optimal makespan found by MILP
-- MSLOT -> makespan found by SLOT algorithm
-- MHEFT-NF -> makespan found by HEFT-NF algorithm
-- UMIP -> time taken by MILP in micro-seconds
-- USLOT -> time taken by SLOT in micro-seconds
-- UHEFTNF -> time taken by HEFT-NF in micro-seconds
-- S boolean. True if the scheduling found by SLOT(HEFT-NF) is identical to the scheduling found by MILP
-- M boolean. True if the makespan found by SLOT(HEFT-NF) is up to 1% different by the one found by MILP
+The CSV files contain 3 tables. In the first table there is one row per problem instance with the following columns (`ALGO` is the evaluated algorithm, `SLOT` or `HEFT-NF`):
 
-2. The second table (present at the end of csv file) resumes the differences.
-There is a line for each combination number of tasks/number of edges of the DAG.
-Columns are: 
-- T -> number of tasks
-- E -> number of edges
-- N -> total number of tested instances with such number of tasks and edges
-- SchedDiff -> number of instances for which the scheduling found by SLOT(HEFT-NF) are different from the one found by MILP.
-- SchedMkspDiff -> number of instances for which the makespans found by SLOT(HEFT-NF) is up to 1% different by the ones found by MILP
+| Column   | Description                                                                                       |
+| :------- | :-----------------                                                                                |
+| NAME     | unique name of the instance                                                                       |
+| T        | number of tasks                                                                                   |
+| E        | total number of edges                                                                             |
+| MMIP     | optimal makespan found by MILP                                                                    |
+| M`ALGO`  | makespan found by `ALGO`                                                                          |
+| UMIP     | time taken by MILP in micro-seconds                                                               |
+| U`ALGO`  | time taken by `ALGO` in micro-seconds                                                             |
+| S        | true if the scheduling found by `ALGO` is the same as the scheduling found by MILP                |
+| M        | true if the makespan found by `ALGO` is the same as the one found by MILP (with a 0.1% tolerance) |
 
-Other columns only refer to the instances for for which the makespans found by SLOT(HEFT-NF) is up to 1% different by the ones found by MILP. Values are expressed in terms of percentage from makespan found by MILP.
-- MinMkspDiff -> the shorter difference between the makespans 
-- MaxMkspDiff -> the larger difference between the makespans 
-- AvgMkspDiff -> the more average difference between the makespans 
-- StdMkspDiff -> the standard deviation difference between the makespans 
+Note: the instance name provides extra information. `xc7s25 t06 e001 r0.1 R0.5 d10.0 D50.0 s034`, for example, indicates that this 6-task (`t06`) instance has only 1 internal edge (`e001`) between tasks (internal edges exclude source and sink incident edges).
 
-3. The last table (at the very end of csv file) resumes the execution times, in micro-seconds, of OUR implementations.
-Columns are:
-- T -> number of tasks
-- E -> number of edges
-- N -> total number of tested instances with such number of tasks and edges
-- MinMipTime -> minimum execution time taken by MILP
-- MaxMipTime -> maximum execution time taken by MILP
-- AvgMipTime -> average execution time taken by MILP
-- StdMipTime -> standard-deviations of MILP execution timing
-- MinSlotTime -> minimum execution time taken by SLOT
-- MaxSlotTime -> maximum execution time taken by SLOT
-- AvgSlotTime -> average execution time taken by SLOT
-- StdSlotTime -> standard-deviations of SLOT execution timing
-- MinHeftNFTime -> minimum execution time taken by HEFT-NF
-- MaxHeftNFTime -> maximum execution time taken by HEFT-NF
-- AvgHeftNFTime -> average execution time taken by HEFT-NF
-- StdHeftNFTime -> standard-deviations of HEFT-NF execution timing
+The second table, near the end of the file, summarizes the scheduling and makespan differences between `ALGO` and the optimal MILP solution. Makespan differences are expressed in percentage of the MILP makespan. The `M0.1` set is the set of instances for which `ALGO` makespan is more than 0.1% greater than MILP.
+
+| Column        | Description                                                                                          |
+| :-------      | :-----------------                                                                                   |
+| T             | number of tasks                                                                                      |
+| E             | total number of edges                                                                                |
+| N             | total number of instances with this number of tasks and edges                                        |
+| SchedDiff     | number of instances for which the scheduling found by `ALGO` is different from the one found by MILP |
+| SchedMkspDiff | number of instances in `M0.1`                                                                        |
+| MinMkspDiff   | minimum makespan difference in `M0.1`                                                                |
+| MaxMkspDiff   | maximum makespan difference in `M0.1`                                                                |
+| AvgMkspDiff   | average makespan difference in `M0.1`                                                                |
+| StdMkspDiff   | standard deviation of the makespan differences in `M0.1`                                             |
+
+The third table, at the end of the file, summarizes the running time differences between `ALGO` and the MILP solver:
+
+| Column        | Description                                                   |
+| :-------      | :-----------------                                            |
+| T             | number of tasks                                               |
+| E             | total number of edges                                         |
+| N             | total number of instances with this number of tasks and edges |
+| MinMipTime    | minimum execution time taken by MILP                          |
+| MaxMipTime    | maximum execution time taken by MILP                          |
+| AvgMipTime    | average execution time taken by MILP                          |
+| StdMipTime    | standard-deviations of MILP execution timing                  |
+| Min`ALGO`Time | minimum execution time taken by `ALGO`                        |
+| Max`ALGO`Time | maximum execution time taken by `ALGO`                        |
+| Avg`ALGO`Time | average execution time taken by `ALGO`                        |
+| Std`ALGO`Time | standard-deviation of `ALGO` execution time                   |
 
 
-Folder "Testbench"
+## Problem instances
 
-It contains all the graph instances in json format + a file describing the target FPGA + a file that list the instance whose MILP formulation was too long.
-This directory contains thousands of json files whose format is:
+The `Testbench` folder and its sub-folders contain the specifications of all problem instances used for the evaluation in JSON format. The `Testbench/xc7s25/t12/e010/r0.1R0.5d10.0D50.0/038.app.json` file, for example, specifies a 12-tasks instance with 10 internal edges (internal edges exclude source and sink incident edges):
 
-tests/xc7s25/tXX/eYYY/r0.1R0.5d10.0D50.0/ZZZ.app.json
+```json
+{
+  "name": "xc7s25 t12 e010 r0.1 R0.5 d10.0 D50.0 s038",
+  "task": [
+    { "resource": [ 0, 0, 0 ], "duration": 0.0 },
+    { "resource": [ 6591, 14, 14 ], "duration": 34.014594598271053 },
+    { "resource": [ 9853, 19, 10 ], "duration": 32.775429746662752 },
+    { "resource": [ 9401, 32, 9 ], "duration": 17.229717704656363 },
+    { "resource": [ 3841, 28, 20 ], "duration": 49.817077184180278 },
+    { "resource": [ 9271, 8, 22 ], "duration": 48.56182585650491 },
+    { "resource": [ 5821, 24, 20 ], "duration": 31.173848548485125 },
+    { "resource": [ 7198, 27, 6 ], "duration": 46.418973089234981 },
+    { "resource": [ 9681, 17, 18 ], "duration": 24.737838850529315 },
+    { "resource": [ 7190, 33, 22 ], "duration": 44.93350100056611 },
+    { "resource": [ 10253, 30, 17 ], "duration": 43.371482419771141 },
+    { "resource": [ 0, 0, 0 ], "duration": 0.0 }
+  ],
+  "adjacency": [
+    [ 1, 3, 4, 6 ],
+    [ 2, 8 ],
+    [ 5, 7, 9 ],
+    [ 10 ],
+    [ 8, 10 ],
+    [ 7 ],
+    [ 11 ],
+    [ 11 ],
+    [ 11 ],
+    [ 10 ],
+    [ 11 ],
+    [ ]
+  ]
+}
+```
 
-where:
-- 06 <= XX <= 15 is the number of tasks,
-- 000 <= YYY is the number of internal edges in the DAG (edges except
-source and sink incidents)
-- 001 <= ZZZ <= 100 is the seed of the random generator used to generate
-the application
+The `task` array lists the 12 tasks and for each, its consumption of each of the 3 resource types and its duration in milliseconds. Note that the source task (task 0) and the sink task (task 11) are dummy tasks with zero resources consumption and zero duration: they are used only to close the Directed Acyclic Graph that represents the inter-tasks dependencies.
 
-app.json specifies the application using the following json fields:
-- name -> the name of the instance according to the rules above mentioned
-- task -> for each task, fields "resource" and "duration" are specified. "resource" field is an array which has lenght 3 in this benchmark (LEs, dsps, brams). "duration" is the task execution time expressed in milliseconds. Note that source and sink are dummy tasks from resource and duration point of view. 
-- adjacency -> for each task a list that contains task's successors is given. Adjacency lists follow the order of tasks.
+The `adjacency` array specifies the inter-task data dependencies. The first sub-array is the list of the immediate successors of task 0 (source task). The second lists the immediate successors of task 1... Note that the sink task (task 11) has no successors.
 
-EXAMPLE
+The DAG of this instance is the following:
 
-{ "name": "xc7s25 t06 e000 r0.1 R0.5 d10.0 D50.0 s001", "task": [ { "resource": [ 0, 0, 0 ], "duration": 0.0 }, { "resource": [ 6075, 21, 9 ], "duration": 39.848674824672422 }, { "resource": [ 4932, 13, 22 ], "duration": 30.936674559612236 }, { "resource": [ 9712, 30, 8 ], "duration": 23.740040935787903 }, { "resource": [ 8566, 17, 7 ], "duration": 16.253878259600562 }, { "resource": [ 0, 0, 0 ], "duration": 0.0 } ], "adjacency": [ [ 1, 2, 3, 4 ], [ 5 ], [ 5 ], [ 5 ], [ 5 ], [ ] ] }
+![Example Directed Acyclic Graph (DAG)](images/xc7s25-t12-e010-r0.1R0.5d10.0D50.0-038.png)
 
-In this example, there are 6 tasks.
-Task 0 is the source, tasks 1, 2, 3, 4 depend from it and they are parallel. 
-All tasks 1, 2, 3, 4 have a dependency to task 5, that is the sink. Task 3, for example, requires 9712 Logic Elements, 30 dsps and 8 bram blocks. It has a duration of 23.74 microseconds.
+The target FPGA for this evaluation is specified in JSON format in `Testbench/xc7s25.json`:
 
-File "unusedGraphs.txt" contains a list of apps that are not taken into account in this analysis. We put a timer to MILP formulation. If such timer expires without the completion of MILP formulation, the application is discarded. This is to limit cases for which calculating an exact solution is too long.
+```json
+{
+"name": "xc7s25",
+"reconfiguration": 0.040000,
+"resource": [23360, 80, 45]
+}
+```
 
-Finally, file "xc7s25.json" contains the description of the FPGA that we took into account during the simulations (Xilinx Spartan 7 - xc7s25". It is composed by 23360 Logic Elements, 80 Dsps, 45 BRAM blocks and a full reconfiguration time of 0.04 s.
+The reconfiguration time (40 ms) is expressed in seconds. The 3 resource types are, in order, Configurable Logic Blocks (CLB), Digital Signal Processing blocks (DSP) and Block RAM (BRAM), with respective total amounts of 23360, 80 and 45.
+
+The `Testbench/unusedGraphs.txt` file contains the list of problem instances that could not be included in this evaluation because the time taken by the MILP solver was too long and the solver had to be interrupted.
+
+<!-- vim: set textwidth=0: -->
